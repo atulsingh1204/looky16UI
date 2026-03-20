@@ -29,6 +29,67 @@
   background: #111;
 }
 
+/* ─── Fallback image preview ─── */
+#mag-fallback-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform-origin: center center;
+  /* No CSS transition here — JS handles it for snappy zoom */
+}
+
+/* Subtle scan-line overlay to give a real camera "live feed" feel */
+.mag-preview-area::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.06) 3px,
+    rgba(0,0,0,0.06) 4px
+  );
+  pointer-events: none;
+  z-index: 5;
+  mix-blend-mode: multiply;
+}
+
+/* Live-feed animated top-scan bar (only when not frozen) */
+.mag-preview-area:not(.frozen)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255,255,255,0.18) 40%,
+    rgba(255,255,255,0.35) 50%,
+    rgba(255,255,255,0.18) 60%,
+    transparent 100%
+  );
+  animation: scanLine 3.5s linear infinite;
+  pointer-events: none;
+  z-index: 6;
+}
+
+@keyframes scanLine {
+  0%   { top: 0%; }
+  100% { top: 100%; }
+}
+
+/* Stop scan animation when frozen */
+.mag-preview-area.frozen::after { display: none; }
+
+/* Pan cursor when zoomed in */
+.mag-preview-area.panning { cursor: grabbing !important; }
+.mag-preview-area.zoom-active { cursor: grab; }
+
 /* ─── Mode badge ─── */
 .mag-mode-badge {
   position: absolute;
