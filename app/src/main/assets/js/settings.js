@@ -98,10 +98,16 @@ window.SettingsScreen = (function () {
 
   function init() {
     // Home mode radio
+    const modeTTSNames = {
+      carousel:     'Carousel mode',
+      tile:         'Tile Grid mode',
+      simple:       'Simple List mode',
+      'three-icon': 'Three Icon mode',
+    };
     document.querySelectorAll('input[name="home-mode"]').forEach(radio => {
       radio.addEventListener('change', e => {
         HomeScreen.setMode(e.target.value);
-        TTS.speak(e.target.value + ' mode');
+        TTS.speak(modeTTSNames[e.target.value] || (e.target.value + ' mode'));
       });
     });
 

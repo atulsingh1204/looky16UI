@@ -59,6 +59,15 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 if (intent != null) startActivity(intent)
             } catch (e: Exception) { /* ignore */ }
         }
+
+        @JavascriptInterface
+        fun vibrate(ms: Long) {
+            try {
+                val vib = getSystemService(VIBRATOR_SERVICE) as? android.os.Vibrator
+                @Suppress("DEPRECATION")
+                vib?.vibrate(ms.coerceIn(10, 200))
+            } catch (e: Exception) { /* ignore */ }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -152,6 +152,110 @@ window.HomeScreen = (function () {
     });
   }
 
+  // ─── Render three icon mode ────────────────
+  const THREE_ICON_APPS = [
+    {
+      id: 'magnifier', name: 'Magnifier', desc: 'Zoom & enhance view',
+      screen: 'magnifier',
+      icon: `<svg viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <line x1="11" y1="7.5" x2="11" y2="14.5" stroke="currentColor" stroke-width="1.8"/>
+        <line x1="7.5" y1="11" x2="14.5" y2="11" stroke="currentColor" stroke-width="1.8"/>
+        <line x1="16.2" y1="16.2" x2="22" y2="22" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>`
+    },
+    {
+      id: 'apps', name: 'Apps', desc: 'Browse all applications',
+      screen: 'apps',
+      icon: `<svg viewBox="0 0 24 24">
+        <rect x="3"  y="3"  width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <rect x="14" y="3"  width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <rect x="3"  y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8" fill="none"/>
+      </svg>`
+    },
+    {
+      id: 'settings', name: 'Settings', desc: 'Customise your device',
+      screen: 'settings',
+      icon: `<svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06
+                 a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09
+                 A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06
+                 A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09
+                 A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06
+                 A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09
+                 a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06
+                 A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09
+                 a1.65 1.65 0 00-1.51 1z"
+              stroke="currentColor" stroke-width="1.8" fill="none"/>
+      </svg>`
+    },
+  ];
+
+  function addRipple(section, e) {
+    const rect   = section.getBoundingClientRect();
+    const size   = Math.max(rect.width, rect.height) * 0.6;
+    const x      = (e.clientX || rect.left + rect.width  / 2) - rect.left - size / 2;
+    const y      = (e.clientY || rect.top  + rect.height / 2) - rect.top  - size / 2;
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;`;
+    section.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  }
+
+  function renderThreeIcon() {
+    const panel = document.getElementById('home-three-icon');
+    panel.innerHTML = '';
+
+    THREE_ICON_APPS.forEach(app => {
+      const section = document.createElement('button');
+      section.className   = 'three-icon-section';
+      section.setAttribute('data-tts', app.name + '. ' + app.desc);
+      section.setAttribute('aria-label', app.name);
+      section.setAttribute('role', 'button');
+      section.setAttribute('tabindex', '0');
+      section.innerHTML = `
+        <div class="three-icon-circle">${app.icon}</div>
+        <div class="three-icon-label">${app.name}</div>
+        <div class="three-icon-sublabel">${app.desc}</div>
+      `;
+
+      // Tap / click
+      section.addEventListener('click', e => {
+        TTS.speak('Opening ' + app.name);
+        addRipple(section, e);
+
+        // Brief pressed class for visual feedback
+        section.classList.add('pressed');
+        setTimeout(() => section.classList.remove('pressed'), 300);
+
+        // Haptic feedback (Android)
+        if (window.Android && typeof window.Android.vibrate === 'function') {
+          try { window.Android.vibrate(40); } catch (_) {}
+        } else if (navigator.vibrate) {
+          navigator.vibrate(40);
+        }
+
+        setTimeout(() => {
+          if (app.screen) Router.navigate(app.screen);
+          else showToast('Launching ' + app.name + '...');
+        }, 120);
+      });
+
+      // Keyboard enter / space
+      section.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          section.click();
+        }
+      });
+
+      panel.appendChild(section);
+    });
+  }
+
   // ─── Render simple list ────────────────────
   function renderSimple() {
     const list = document.getElementById('simple-list');
@@ -203,6 +307,9 @@ window.HomeScreen = (function () {
     } else if (mode === 'simple') {
       document.getElementById('home-simple').classList.add('active');
       renderSimple();
+    } else if (mode === 'three-icon') {
+      document.getElementById('home-three-icon').classList.add('active');
+      renderThreeIcon();
     }
 
     // Sync radio in settings
