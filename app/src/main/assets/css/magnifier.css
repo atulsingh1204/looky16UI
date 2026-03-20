@@ -1,0 +1,355 @@
+/* ═══════════════════════════════════════════════
+   MAGNIFIER.CSS — Full-screen camera + toolbar
+═══════════════════════════════════════════════ */
+
+#screen-magnifier {
+  top: 0;
+  background: #000;
+  flex-direction: column;
+}
+
+/* ─── Camera preview area ─── */
+.mag-preview-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+#mag-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* A4 mode: narrower FOV visual */
+#screen-magnifier.mode-a4 #mag-video {
+  object-fit: contain;
+  background: #111;
+}
+
+/* ─── Mode badge ─── */
+.mag-mode-badge {
+  position: absolute;
+  top: var(--sp-md);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.75);
+  border: 2px solid var(--color-accent);
+  color: var(--color-fg);
+  border-radius: var(--radius-pill);
+  padding: var(--sp-xs) var(--sp-lg);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+/* ─── Zoom badge ─── */
+.mag-zoom-badge {
+  position: absolute;
+  top: var(--sp-md);
+  right: var(--sp-lg);
+  background: rgba(0,0,0,0.75);
+  border: 2px solid var(--color-accent);
+  color: var(--color-accent);
+  border-radius: var(--radius-pill);
+  padding: var(--sp-xs) var(--sp-md);
+  font-size: var(--fs-lg);
+  font-weight: 900;
+  pointer-events: none;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  min-width: 80px;
+  text-align: center;
+}
+
+/* ─── A4 mode side rails ─── */
+.mag-a4-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-md);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 20;
+  padding: var(--sp-md) 0;
+}
+
+.mag-a4-left  { left: 0;  border-right: 2px solid var(--color-border); }
+.mag-a4-right { right: 0; border-left:  2px solid var(--color-border); }
+
+.mag-rail-btn {
+  width: 88px;
+  height: 88px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-accent);
+  background: rgba(0,0,0,0.5);
+  color: var(--color-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.mag-rail-btn svg {
+  width: 48px;
+  height: 48px;
+  fill: none;
+  stroke: var(--color-fg);
+  stroke-width: 2;
+}
+
+.mag-rail-btn:active {
+  background: var(--color-accent);
+  transform: scale(0.93);
+}
+
+/* ─── OCR Overlay ─── */
+.mag-ocr-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-lg);
+}
+
+.ocr-result-box {
+  background: var(--color-surface);
+  border: 3px solid var(--color-accent);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-xl);
+  max-width: 70vw;
+  max-height: 70vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-lg);
+  text-align: center;
+}
+
+.ocr-result-box h2 {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.ocr-result-box p {
+  font-size: var(--fs-lg);
+  color: var(--color-fg);
+  line-height: 1.6;
+}
+
+.ocr-close-btn {
+  align-self: center;
+  padding: var(--sp-sm) var(--sp-xl);
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border: none;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  cursor: pointer;
+  min-height: var(--touch-min);
+  min-width: 200px;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.ocr-close-btn:active {
+  opacity: 0.8;
+  transform: scale(0.96);
+}
+
+/* ─── Main bottom toolbar ─── */
+.mag-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-sm) var(--sp-md);
+  background: rgba(0,0,0,0.85);
+  border-top: 2px solid var(--color-border);
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  transition: transform var(--transition-med);
+}
+
+.mag-toolbar.hidden-toolbar {
+  transform: translateY(100%);
+}
+
+/* ─── Group dividers ─── */
+.mag-mode-group,
+.mag-zoom-group {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  background: rgba(255,255,255,0.04);
+  flex-shrink: 0;
+}
+
+/* ─── Mag button ─── */
+.mag-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 96px;
+  min-width: 96px;
+  height: 96px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background: rgba(255,255,255,0.06);
+  color: var(--color-fg);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+  flex-shrink: 0;
+  padding: 4px;
+}
+
+.mag-btn svg {
+  width: 44px;
+  height: 44px;
+  fill: none;
+  stroke: var(--color-fg);
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+.mag-btn span {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-fg);
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.mag-btn:active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg);
+  transform: scale(0.93);
+}
+
+.mag-btn:active svg { stroke: var(--color-bg); }
+.mag-btn:active span { color: var(--color-bg); }
+
+.mag-btn.active,
+.mag-mode-btn.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.mag-mode-btn.active svg { stroke: var(--color-bg); }
+.mag-mode-btn.active span { color: var(--color-bg); }
+
+/* Back button in magnifier */
+.mag-btn-back {
+  border-color: var(--color-accent2);
+  background: rgba(255,255,255,0.08);
+}
+
+/* ─── Show toolbar floating button ─── */
+.mag-show-btn {
+  position: absolute;
+  bottom: var(--sp-lg);
+  right: var(--sp-lg);
+  width: var(--touch-min);
+  height: var(--touch-min);
+  border-radius: 50%;
+  border: 3px solid var(--color-accent);
+  background: rgba(0,0,0,0.85);
+  color: var(--color-fg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  backdrop-filter: blur(4px);
+}
+
+.mag-show-btn svg {
+  width: 44px;
+  height: 44px;
+  fill: none;
+  stroke: var(--color-fg);
+  stroke-width: 2.5;
+}
+
+.mag-show-btn:active {
+  background: var(--color-accent);
+  transform: scale(0.93);
+}
+
+/* Colour filter overlays */
+.mag-preview-area.filter-high-contrast { filter: contrast(200%) grayscale(100%); }
+.mag-preview-area.filter-invert        { filter: invert(1); }
+.mag-preview-area.filter-yellow        { filter: sepia(100%) saturate(300%) hue-rotate(10deg) contrast(150%); }
+.mag-preview-area.filter-none          { filter: none; }
+
+/* Camera placeholder when no permission */
+.mag-no-camera {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-lg);
+  color: var(--color-fg);
+  background: #111;
+}
+
+.mag-no-camera svg {
+  width: 120px;
+  height: 120px;
+  stroke: var(--color-accent);
+  fill: none;
+  stroke-width: 1.5;
+  opacity: 0.5;
+}
+
+.mag-no-camera p {
+  font-size: var(--fs-lg);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* Capture flash effect */
+.capture-flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  animation: captureFlash 0.4s ease;
+  z-index: 40;
+}
+
+@keyframes captureFlash {
+  0%   { opacity: 0; }
+  20%  { opacity: 0.8; }
+  100% { opacity: 0; }
+}
+

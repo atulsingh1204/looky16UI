@@ -1,0 +1,62 @@
+/* ═══════════════════════════════════════════════
+   THEMES.CSS — High-contrast colour pairs
+   Looky16 Low-Vision Launcher
+   Minimum 10:1 contrast ratio for all pairs
+═══════════════════════════════════════════════ */
+
+/* ─── Theme A: Black & Yellow (Default) ─── */
+[data-theme="A"] {
+  --color-bg:       #000000;
+  --color-surface:  #111111;
+  --color-surface2: #1a1a1a;
+  --color-fg:       #FFFF00;
+  --color-accent:   #FFCC00;
+  --color-accent2:  #FFA500;
+  --color-border:   #444400;
+  --color-muted:    #CCCC00;
+  --color-danger:   #FF6600;
+  --color-success:  #AAFF00;
+}
+
+/* ─── Theme B: Black & White ─── */
+[data-theme="B"] {
+  --color-bg:       #0A0A0A;
+  --color-surface:  #161616;
+  --color-surface2: #202020;
+  --color-fg:       #FFFFFF;
+  --color-accent:   #EEEEEE;
+  --color-accent2:  #CCCCCC;
+  --color-border:   #444444;
+  --color-muted:    #AAAAAA;
+  --color-danger:   #FF6666;
+  --color-success:  #88FF88;
+}
+
+/* ─── Theme C: Dark Navy & Cyan ─── */
+[data-theme="C"] {
+  --color-bg:       #001833;
+  --color-surface:  #002244;
+  --color-surface2: #002d55;
+  --color-fg:       #00FFFF;
+  --color-accent:   #00E5E5;
+  --color-accent2:  #00BFFF;
+  --color-border:   #004488;
+  --color-muted:    #00AAAA;
+  --color-danger:   #FF6633;
+  --color-success:  #00FF88;
+}
+
+/* ─── Theme D: Dark Green & Lime ─── */
+[data-theme="D"] {
+  --color-bg:       #001A00;
+  --color-surface:  #002200;
+  --color-surface2: #003300;
+  --color-fg:       #AAFF00;
+  --color-accent:   #88FF00;
+  --color-accent2:  #66FF33;
+  --color-border:   #224400;
+  --color-muted:    #77CC00;
+  --color-danger:   #FF6600;
+  --color-success:  #00FF88;
+}
+

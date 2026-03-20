@@ -1,0 +1,172 @@
+/* ═══════════════════════════════════════════════
+   SETTINGS.CSS
+═══════════════════════════════════════════════ */
+
+#screen-settings {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-lg) var(--sp-xl);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-lg);
+  align-content: start;
+  overscroll-behavior: contain;
+}
+
+/* Custom scrollbar */
+.settings-content::-webkit-scrollbar { width: 10px; }
+.settings-content::-webkit-scrollbar-track { background: var(--color-surface); }
+.settings-content::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+}
+
+/* ─── Settings card ─── */
+.settings-card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.settings-card:last-child,
+.settings-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.settings-card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  color: var(--color-fg);
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--sp-sm);
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+/* ─── Theme picker ─── */
+.theme-picker {
+  display: flex;
+  gap: var(--sp-md);
+  flex-wrap: wrap;
+}
+
+.theme-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-xs);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: var(--sp-xs);
+  border-radius: var(--radius-md);
+  transition: transform var(--transition-fast);
+  min-width: 110px;
+}
+
+.theme-swatch:active { transform: scale(0.93); }
+
+.swatch-preview {
+  width: 100px;
+  height: 80px;
+  border-radius: var(--radius-md);
+  border: 4px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 900;
+  transition: box-shadow var(--transition-fast);
+}
+
+.theme-swatch.active .swatch-preview {
+  box-shadow: 0 0 0 4px var(--color-fg), 0 0 20px var(--color-accent);
+}
+
+.swatch-name {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-fg);
+  text-align: center;
+}
+
+/* ─── Favourite app list ─── */
+.fav-app-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.fav-app-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  padding: var(--sp-sm) var(--sp-md);
+  background: var(--color-surface2);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  min-height: var(--touch-min);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.fav-app-row:has(input:checked) {
+  border-color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+.fav-app-row .fav-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 28px;
+}
+
+.fav-app-row label {
+  flex: 1;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--color-fg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+}
+
+.fav-app-row input[type="checkbox"] {
+  width: 36px;
+  height: 36px;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+

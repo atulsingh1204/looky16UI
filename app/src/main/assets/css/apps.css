@@ -1,0 +1,288 @@
+/* ═══════════════════════════════════════════════
+   APPS.CSS — Apps screen grid & list views
+═══════════════════════════════════════════════ */
+
+#screen-apps {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Header right buttons ─── */
+.apps-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  margin-left: auto;
+}
+
+.view-toggle-btn,
+.settings-icon-btn {
+  width: var(--touch-min);
+  height: var(--touch-min);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-fg);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.view-toggle-btn svg,
+.settings-icon-btn svg {
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke: var(--color-fg);
+  stroke-width: 2;
+}
+
+.view-toggle-btn:active,
+.settings-icon-btn:active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.view-toggle-btn:active svg,
+.settings-icon-btn:active svg {
+  stroke: var(--color-bg);
+}
+
+/* ─── Search bar ─── */
+.apps-search-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  padding: var(--sp-sm) var(--sp-lg);
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.search-icon {
+  width: 36px;
+  height: 36px;
+  fill: none;
+  stroke: var(--color-muted);
+  stroke-width: 2.5;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  height: 64px;
+  background: var(--color-surface2);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-fg);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  padding: 0 var(--sp-lg);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  caret-color: var(--color-accent);
+}
+
+.search-input::placeholder {
+  color: var(--color-muted);
+  opacity: 0.6;
+}
+
+.search-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-border);
+}
+
+/* ─── Content scroll area ─── */
+.apps-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-lg);
+  overscroll-behavior: contain;
+}
+
+/* Custom scrollbar */
+.apps-content::-webkit-scrollbar { width: 10px; }
+.apps-content::-webkit-scrollbar-track { background: var(--color-surface); }
+.apps-content::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+}
+
+/* ─── GRID VIEW ─── */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-md);
+}
+
+.app-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-lg) var(--sp-md);
+  background: var(--color-surface);
+  border: 3px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+  min-height: 170px;
+  position: relative;
+}
+
+.app-tile:active {
+  background: var(--color-surface2);
+  border-color: var(--color-accent);
+  transform: scale(0.95);
+}
+
+.app-tile-icon {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface2);
+  border: 2px solid var(--color-accent);
+  flex-shrink: 0;
+}
+
+.app-tile-icon svg {
+  width: 60px;
+  height: 60px;
+  fill: none;
+  stroke: var(--color-fg);
+  stroke-width: 1.5;
+}
+
+.app-tile-icon .icon-emoji {
+  font-size: 52px;
+  line-height: 1;
+}
+
+.app-tile-name {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-fg);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.app-settings-btn {
+  position: absolute;
+  top: var(--sp-xs);
+  right: var(--sp-xs);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface2);
+  color: var(--color-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast), background var(--transition-fast);
+}
+
+.app-settings-btn:active {
+  opacity: 1;
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.app-settings-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* ─── LIST VIEW ─── */
+.apps-grid.list-view {
+  grid-template-columns: 1fr;
+  gap: var(--sp-sm);
+}
+
+.apps-grid.list-view .app-tile {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 96px;
+  padding: var(--sp-md) var(--sp-lg);
+  gap: var(--sp-lg);
+}
+
+.apps-grid.list-view .app-tile-icon {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.apps-grid.list-view .app-tile-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+.apps-grid.list-view .app-tile-icon .icon-emoji {
+  font-size: 40px;
+}
+
+.apps-grid.list-view .app-tile-name {
+  text-align: left;
+  font-size: var(--fs-md);
+}
+
+.apps-grid.list-view .app-tile-desc {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+  margin-top: 4px;
+  text-align: left;
+}
+
+.app-tile-desc { display: none; }
+
+.apps-grid.list-view .app-settings-btn {
+  margin-left: auto;
+  position: static;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  opacity: 1;
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.apps-grid.list-view .app-settings-btn svg {
+  width: 36px;
+  height: 36px;
+}
+
+/* No results */
+.no-results {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-lg);
+  padding: var(--sp-2xl);
+  color: var(--color-muted);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+
+.no-results svg {
+  width: 80px;
+  height: 80px;
+  stroke: var(--color-muted);
+  fill: none;
+  opacity: 0.5;
+}
+

@@ -1,0 +1,88 @@
+/* ═══════════════════════════════════════════════
+   STATUS-BAR.CSS — Permanent top bar
+═══════════════════════════════════════════════ */
+
+.status-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--status-bar-h);
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp-lg);
+  z-index: 200;
+  gap: var(--sp-sm);
+}
+
+.status-left {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-md);
+}
+
+.sb-time {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--color-fg);
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.sb-date {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-muted);
+  letter-spacing: 0.02em;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-lg);
+}
+
+.sb-icon-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: var(--touch-min);
+  height: var(--touch-min);
+  padding: 0 var(--sp-sm);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface2);
+}
+
+.sb-icon {
+  width: 36px;
+  height: 36px;
+  fill: var(--color-fg);
+  color: var(--color-fg);
+  flex-shrink: 0;
+}
+
+.sb-label {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-fg);
+  white-space: nowrap;
+}
+
+/* Battery fill colour */
+#bat-fill {
+  fill: var(--color-success);
+  transition: width var(--transition-slow);
+}
+
+.sb-battery.low #bat-fill { fill: var(--color-danger); }
+.sb-battery.medium #bat-fill { fill: var(--color-accent2); }
+
+/* Wifi / BT connected indicator dot */
+.sb-icon-group.connected .sb-icon { color: var(--color-success); fill: var(--color-success); }
+.sb-icon-group.disconnected .sb-icon { color: var(--color-muted); fill: var(--color-muted); opacity: 0.5; }
+

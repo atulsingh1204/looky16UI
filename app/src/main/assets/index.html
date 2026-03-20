@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="A">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Looky16 Launcher</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <link rel="stylesheet" href="css/status-bar.css" />
+  <link rel="stylesheet" href="css/splash.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/magnifier.css" />
+  <link rel="stylesheet" href="css/apps.css" />
+  <link rel="stylesheet" href="css/settings.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       PERMANENT STATUS BAR (visible on all screens except splash)
+  ═══════════════════════════════════════════════ -->
+  <div id="status-bar" class="status-bar hidden">
+    <div class="status-left">
+      <span id="sb-time" class="sb-time">12:00</span>
+      <span id="sb-date" class="sb-date">Mon, 20 Mar 2026</span>
+    </div>
+    <div class="status-right">
+      <div class="sb-icon-group" id="sb-wifi" title="WiFi">
+        <svg viewBox="0 0 24 24" class="sb-icon"><path d="M1 7.5C5.2 3.3 10.3 1 12 1s6.8 2.3 11 6.5l-2 2C17.4 5.8 14.8 4 12 4S6.6 5.8 3 9.5zM12 8c2.2 0 4.2.9 5.7 2.3l-2 2A4.96 4.96 0 0012 11c-1.4 0-2.7.6-3.7 1.4l-2-2C7.8 8.9 9.8 8 12 8zm0 5a2 2 0 110 4 2 2 0 010-4z"/></svg>
+        <span class="sb-label">WiFi</span>
+      </div>
+      <div class="sb-icon-group" id="sb-bt" title="Bluetooth">
+        <svg viewBox="0 0 24 24" class="sb-icon"><path d="M17 5l-5-4v7l-3-3-1.4 1.4L11 9.8 7.6 13l1.4 1.4 3-3V18.5l5-4-3.7-3L17 8.5zM14 7.2l1.4 1.2L14 9.5V7.2zm1.4 8.1L14 16.5v-2.8z"/></svg>
+        <span class="sb-label">BT</span>
+      </div>
+      <div class="sb-icon-group" id="sb-battery" title="Battery">
+        <svg viewBox="0 0 24 24" class="sb-icon" id="sb-bat-icon">
+          <rect x="2" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+          <rect x="3" y="8" width="14" height="8" rx="1" id="bat-fill"/>
+          <rect x="20" y="10" width="2" height="4" rx="1"/>
+        </svg>
+        <span class="sb-label" id="sb-bat-pct">85%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SCREEN: SPLASH
+  ═════════════════════════════════════════════���═ -->
+  <section id="screen-splash" class="screen active">
+    <div class="splash-container">
+      <div class="splash-logo">
+        <svg viewBox="0 0 120 120" class="logo-svg">
+          <circle cx="60" cy="60" r="55" fill="currentColor" opacity="0.15"/>
+          <circle cx="60" cy="60" r="38" fill="none" stroke="currentColor" stroke-width="6"/>
+          <circle cx="60" cy="60" r="10" fill="currentColor"/>
+          <line x1="90" y1="90" x2="108" y2="108" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="60" cy="60" r="22" fill="none" stroke="currentColor" stroke-width="3" opacity="0.5"/>
+        </svg>
+      </div>
+      <h1 class="splash-title">LOOKY 16</h1>
+      <p class="splash-subtitle">Low Vision Companion</p>
+      <div class="splash-loader">
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SCREEN: HOME
+  ═══════════════════════════════════════════════ -->
+  <section id="screen-home" class="screen">
+
+    <!-- Main App Area -->
+    <div class="home-content">
+
+      <!-- CAROUSEL MODE -->
+      <div id="home-carousel" class="home-mode-panel active">
+        <button class="carousel-arrow carousel-prev" id="carousel-prev" data-tts="Previous app" aria-label="Previous">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="carousel-track" id="carousel-track">
+          <!-- Cards injected by home.js -->
+        </div>
+        <button class="carousel-arrow carousel-next" id="carousel-next" data-tts="Next app" aria-label="Next">
+          <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <!-- TILE MODE -->
+      <div id="home-tile" class="home-mode-panel">
+        <div class="tile-grid" id="tile-grid">
+          <!-- Tiles injected by home.js -->
+        </div>
+      </div>
+
+      <!-- SIMPLE MODE -->
+      <div id="home-simple" class="home-mode-panel">
+        <div class="simple-list" id="simple-list">
+          <!-- Rows injected by home.js -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM QUICK ACCESS BAR (permanent) -->
+    <div class="home-quickbar">
+      <button class="qb-btn" data-screen="magnifier" data-tts="Magnifier" aria-label="Magnifier">
+        <svg viewBox="0 0 24 24" class="qb-icon"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.5" fill="none"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="2"/><line x1="11" y1="8" x2="11" y2="14" stroke="currentColor" stroke-width="2"/></svg>
+        <span>Magnifier</span>
+      </button>
+      <button class="qb-btn" data-screen="apps" data-tts="Apps" aria-label="Apps">
+        <svg viewBox="0 0 24 24" class="qb-icon"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2" fill="none"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2" fill="none"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2" fill="none"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        <span>Apps</span>
+      </button>
+      <button class="qb-btn" data-screen="settings" data-tts="Home Settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" class="qb-icon"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" fill="none"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        <span>Settings</span>
+      </button>
+      <!-- Favorites will be injected here by home.js -->
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SCREEN: MAGNIFIER
+  ═══════════════════════════════════════════════ -->
+  <section id="screen-magnifier" class="screen screen-fullbleed">
+
+    <!-- Camera Preview -->
+    <div class="mag-preview-area">
+      <video id="mag-video" autoplay playsinline muted></video>
+      <canvas id="mag-canvas" class="hidden"></canvas>
+
+      <!-- A4 Mode sidebar indicators -->
+      <div class="mag-a4-rail mag-a4-left hidden" id="mag-a4-left-rail">
+        <button class="mag-rail-btn" data-tts="Zoom in" aria-label="Zoom in" id="mag-zoom-in-rail">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.5" fill="none"/><line x1="11" y1="8" x2="11" y2="14" stroke="currentColor" stroke-width="2"/><line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
+        <button class="mag-rail-btn" data-tts="Zoom out" aria-label="Zoom out" id="mag-zoom-out-rail">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.5" fill="none"/><line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
+        <button class="mag-rail-btn" data-tts="Freeze frame" aria-label="Freeze" id="mag-freeze-rail">
+          <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/></svg>
+        </button>
+      </div>
+      <div class="mag-a4-rail mag-a4-right hidden" id="mag-a4-right-rail">
+        <button class="mag-rail-btn" data-tts="Colour filter" aria-label="Colour filter" id="mag-filter-rail">
+          <svg viewBox="0 0 24 24"><circle cx="8" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="mag-rail-btn" data-tts="Capture image" aria-label="Capture" id="mag-capture-rail">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/><path d="M2 8.5C2 7.1 3.1 6 4.5 6H6l2-2.5h8L18 6h1.5C20.9 6 22 7.1 22 8.5v11c0 1.4-1.1 2.5-2.5 2.5h-15C3.1 22 2 20.9 2 19.5z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </button>
+        <button class="mag-rail-btn" data-tts="OCR read text" aria-label="OCR" id="mag-ocr-rail">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><line x1="7" y1="8" x2="17" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <!-- Mode Badge -->
+      <div class="mag-mode-badge" id="mag-mode-badge">Near View</div>
+
+      <!-- Zoom Level Indicator -->
+      <div class="mag-zoom-badge" id="mag-zoom-badge">1×</div>
+
+      <!-- OCR Result Overlay -->
+      <div class="mag-ocr-overlay hidden" id="mag-ocr-overlay">
+        <div class="ocr-result-box">
+          <h2>OCR Result</h2>
+          <p id="ocr-text">Detected text will appear here...</p>
+          <button class="ocr-close-btn" id="ocr-close" data-tts="Close OCR result">✕ Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM TOOLBAR (default — hidden in A4 mode) -->
+    <div class="mag-toolbar" id="mag-toolbar">
+
+      <!-- Back -->
+      <button class="mag-btn mag-btn-back" data-screen="home" data-tts="Go back to home" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <span>Back</span>
+      </button>
+
+      <!-- Mode Toggle Group -->
+      <div class="mag-mode-group">
+        <button class="mag-btn mag-mode-btn active" data-mode="near" data-tts="Near view camera" aria-label="Near View">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2.5" fill="none"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/></svg>
+          <span>Near</span>
+        </button>
+        <button class="mag-btn mag-mode-btn" data-mode="distance" data-tts="Distance camera" aria-label="Distance">
+          <svg viewBox="0 0 24 24"><path d="M3 12h3m12 0h3M12 3v3m0 12v3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2.5" fill="none"/></svg>
+          <span>Distance</span>
+        </button>
+        <button class="mag-btn mag-mode-btn" data-mode="a4" data-tts="A4 page preview" aria-label="A4 Page">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="1.5" stroke="currentColor" stroke-width="2.5" fill="none"/><line x1="8" y1="7" x2="16" y2="7" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="13" x2="13" y2="13" stroke="currentColor" stroke-width="1.5"/></svg>
+          <span>A4 Page</span>
+        </button>
+      </div>
+
+      <!-- Zoom Controls -->
+      <div class="mag-zoom-group">
+        <button class="mag-btn" id="mag-zoom-out" data-tts="Zoom out" aria-label="Zoom out">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.5" fill="none"/><line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <span>Zoom −</span>
+        </button>
+        <button class="mag-btn" id="mag-zoom-in" data-tts="Zoom in" aria-label="Zoom in">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.5" fill="none"/><line x1="11" y1="8" x2="11" y2="14" stroke="currentColor" stroke-width="2"/><line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <span>Zoom +</span>
+        </button>
+      </div>
+
+      <!-- Colour Filter -->
+      <button class="mag-btn" id="mag-filter" data-tts="Toggle colour filter" aria-label="Colour Filter">
+        <svg viewBox="0 0 24 24"><circle cx="8" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <span>Filter</span>
+      </button>
+
+      <!-- Freeze -->
+      <button class="mag-btn" id="mag-freeze" data-tts="Freeze frame" aria-label="Freeze">
+        <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/></svg>
+        <span>Freeze</span>
+      </button>
+
+      <!-- Capture -->
+      <button class="mag-btn" id="mag-capture" data-tts="Capture image" aria-label="Capture">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/><path d="M2 8.5C2 7.1 3.1 6 4.5 6H6l2-2.5h8L18 6h1.5C20.9 6 22 7.1 22 8.5v11c0 1.4-1.1 2.5-2.5 2.5h-15C3.1 22 2 20.9 2 19.5z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        <span>Capture</span>
+      </button>
+
+      <!-- OCR -->
+      <button class="mag-btn" id="mag-ocr" data-tts="OCR, read text aloud" aria-label="OCR">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><line x1="7" y1="8" x2="17" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>OCR</span>
+      </button>
+
+      <!-- Mag Settings -->
+      <button class="mag-btn" data-screen="mag-settings" data-tts="Magnifier settings" aria-label="Magnifier Settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" fill="none"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        <span>Settings</span>
+      </button>
+
+      <!-- Hide/Show menu -->
+      <button class="mag-btn" id="mag-hide-menu" data-tts="Hide toolbar" aria-label="Hide Menu">
+        <svg viewBox="0 0 24 24" id="mag-hide-icon"><path d="M19 9l-7 7-7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <span id="mag-hide-label">Hide</span>
+      </button>
+    </div>
+
+    <!-- Minimal Toolbar shown when main is hidden -->
+    <button class="mag-show-btn hidden" id="mag-show-btn" data-tts="Show toolbar" aria-label="Show Toolbar">
+      <svg viewBox="0 0 24 24"><path d="M5 15l7-7 7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+    </button>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SCREEN: MAGNIFIER SETTINGS (Modal overlay)
+  ═══════════════════════════════════════════════ -->
+  <div id="screen-mag-settings" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Magnifier Settings</h2>
+        <button class="modal-close" data-close-modal data-tts="Close magnifier settings" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-group">
+          <label class="settings-label">Default Camera Mode</label>
+          <div class="radio-group big-radio">
+            <label><input type="radio" name="mag-default-mode" value="near" checked /> Near View</label>
+            <label><input type="radio" name="mag-default-mode" value="distance" /> Distance</label>
+            <label><input type="radio" name="mag-default-mode" value="a4" /> A4 Page</label>
+          </div>
+        </div>
+        <div class="settings-group">
+          <label class="settings-label">Physical Button Icons on Screen</label>
+          <div class="radio-group big-radio">
+            <label><input type="radio" name="mag-btn-mode" value="basic" checked /> Basic (Back, OCR, Settings, Hide)</label>
+            <label><input type="radio" name="mag-btn-mode" value="all" /> All Physical Buttons</label>
+          </div>
+        </div>
+        <div class="settings-group">
+          <label class="settings-label">Default Zoom Level</label>
+          <div class="slider-row">
+            <span>1×</span>
+            <input type="range" min="1" max="10" value="1" id="mag-default-zoom" class="big-slider" />
+            <span>10×</span>
+          </div>
+        </div>
+        <div class="settings-group">
+          <label class="settings-label">Auto Freeze on Capture</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="mag-auto-freeze" />
+            <span class="toggle-track"></span>
+            <span class="toggle-label-text">Enable</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SCREEN: APPS
+  ═══════════════════════════════════════════════ -->
+  <section id="screen-apps" class="screen">
+    <div class="screen-header">
+      <button class="back-btn" data-screen="home" data-tts="Back to Home" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </button>
+      <h1 class="screen-title">Apps</h1>
+      <div class="apps-header-right">
+        <button class="view-toggle-btn" id="apps-view-toggle" data-tts="Switch view" aria-label="Toggle View">
+          <svg viewBox="0 0 24 24" id="view-icon-grid"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" fill="none"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" fill="none"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" fill="none"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </button>
+        <button class="settings-icon-btn" data-screen="settings" data-tts="App Settings" aria-label="Settings">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" fill="none"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="apps-search-bar">
+      <svg viewBox="0 0 24 24" class="search-icon"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.5" fill="none"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <input type="text" id="apps-search" placeholder="Search apps..." class="search-input" aria-label="Search apps" />
+    </div>
+
+    <div class="apps-content">
+      <div class="apps-grid" id="apps-grid">
+        <!-- App tiles injected by apps.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SCREEN: SETTINGS
+  ═══════════════════════════════════════════════ -->
+  <section id="screen-settings" class="screen">
+    <div class="screen-header">
+      <button class="back-btn" data-screen="home" data-tts="Back to Home" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </button>
+      <h1 class="screen-title">Settings</h1>
+    </div>
+
+    <div class="settings-content">
+
+      <!-- THEME SETTINGS -->
+      <div class="settings-card">
+        <h2 class="settings-card-title">
+          <svg viewBox="0 0 24 24" class="card-icon"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 2a10 10 0 000 20" fill="currentColor" opacity="0.3"/></svg>
+          Colour Theme
+        </h2>
+        <div class="theme-picker">
+          <button class="theme-swatch active" data-theme="A" data-tts="Black and Yellow theme" aria-label="Black Yellow Theme">
+            <div class="swatch-preview" style="background:#000;border-color:#FFFF00;">
+              <span style="color:#FFFF00">Aa</span>
+            </div>
+            <span class="swatch-name">Black &amp; Yellow</span>
+          </button>
+          <button class="theme-swatch" data-theme="B" data-tts="Black and White theme" aria-label="Black White Theme">
+            <div class="swatch-preview" style="background:#0A0A0A;border-color:#FFFFFF;">
+              <span style="color:#FFFFFF">Aa</span>
+            </div>
+            <span class="swatch-name">Black &amp; White</span>
+          </button>
+          <button class="theme-swatch" data-theme="C" data-tts="Navy and Cyan theme" aria-label="Navy Cyan Theme">
+            <div class="swatch-preview" style="background:#001833;border-color:#00FFFF;">
+              <span style="color:#00FFFF">Aa</span>
+            </div>
+            <span class="swatch-name">Navy &amp; Cyan</span>
+          </button>
+          <button class="theme-swatch" data-theme="D" data-tts="Dark Green and Lime theme" aria-label="Dark Green Lime Theme">
+            <div class="swatch-preview" style="background:#001A00;border-color:#AAFF00;">
+              <span style="color:#AAFF00">Aa</span>
+            </div>
+            <span class="swatch-name">Green &amp; Lime</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- HOME SCREEN MODE -->
+      <div class="settings-card">
+        <h2 class="settings-card-title">
+          <svg viewBox="0 0 24 24" class="card-icon"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="currentColor" stroke-width="2" fill="none"/><polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          Home Screen Mode
+        </h2>
+        <div class="radio-group big-radio">
+          <label class="radio-label"><input type="radio" name="home-mode" value="carousel" checked /> <span>Carousel</span></label>
+          <label class="radio-label"><input type="radio" name="home-mode" value="tile" /> <span>Tile Grid</span></label>
+          <label class="radio-label"><input type="radio" name="home-mode" value="simple" /> <span>Simple List</span></label>
+        </div>
+      </div>
+
+      <!-- FONT SIZE -->
+      <div class="settings-card">
+        <h2 class="settings-card-title">
+          <svg viewBox="0 0 24 24" class="card-icon"><text x="3" y="19" font-size="16" fill="currentColor" font-family="sans-serif">A</text><text x="12" y="19" font-size="10" fill="currentColor" font-family="sans-serif">a</text></svg>
+          Font Size
+        </h2>
+        <div class="radio-group big-radio">
+          <label class="radio-label"><input type="radio" name="font-size" value="large" /> <span>Large</span></label>
+          <label class="radio-label"><input type="radio" name="font-size" value="xlarge" checked /> <span>Extra Large</span></label>
+          <label class="radio-label"><input type="radio" name="font-size" value="huge" /> <span>Huge</span></label>
+        </div>
+      </div>
+
+      <!-- TTS SETTINGS -->
+      <div class="settings-card">
+        <h2 class="settings-card-title">
+          <svg viewBox="0 0 24 24" class="card-icon"><path d="M11 5L6 9H2v6h4l5 4V5z" stroke="currentColor" stroke-width="2" fill="none"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+          Text to Speech (TTS)
+        </h2>
+        <div class="settings-group">
+          <label class="toggle-switch">
+            <input type="checkbox" id="tts-enabled" checked />
+            <span class="toggle-track"></span>
+            <span class="toggle-label-text">Enable TTS on tap</span>
+          </label>
+        </div>
+        <div class="settings-group">
+          <label class="settings-label">Speech Rate</label>
+          <div class="slider-row">
+            <span>Slow</span>
+            <input type="range" min="0.5" max="1.5" step="0.1" value="0.9" id="tts-rate" class="big-slider" />
+            <span>Fast</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAVORITE APPS -->
+      <div class="settings-card">
+        <h2 class="settings-card-title">
+          <svg viewBox="0 0 24 24" class="card-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          Favourite Apps (Quick Access)
+        </h2>
+        <p class="settings-hint">Select up to 4 apps to pin to the Home screen quick bar</p>
+        <div class="fav-app-list" id="fav-app-list">
+          <!-- Injected by settings.js -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       TOAST NOTIFICATION
+  ═══════════════════════════════════════════════ -->
+  <div class="toast hidden" id="toast"></div>
+
+  <!-- ═══════════════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════════════ -->
+  <script src="js/tts.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/status-bar.js"></script>
+  <script src="js/home.js"></script>
+  <script src="js/magnifier.js"></script>
+  <script src="js/apps.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
+
